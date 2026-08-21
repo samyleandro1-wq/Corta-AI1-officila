@@ -36,7 +36,7 @@ async function cortarReal(){
         videoId: videoId,
         start: start,
         end: end,
-        title: `Corte ${i+1}`
+       title: `Corte ${i+1}`
       });
     }
 
