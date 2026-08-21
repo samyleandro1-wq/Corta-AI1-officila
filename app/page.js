@@ -1,30 +1,29 @@
-'use client'
+"use client";
+import { useState,useEFFect } from "react";
+const EMAILS_VITALICIOS = ["samyleandro1@gmail.com"]
+const LINK_PAGAMENTO = "https://payment-link-v3.stone.com.br/pl_JZqWpY3oz7PaYgmf86hxb9w6LeyBKRGA"
+export default function Page() {
+  const [url, setUrl] = useState("");
+  const [cuts, setCuts] = useState([]);
+  const [id, setId] = useState("");
+  const [loading, setLoading] = useState(false);
 
-import { useState, useEffect, useRef } from 'react'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from '@/components/ui/dialog'
-import { Badge } from '@/components/ui/badge'
-import { Separator } from '@/components/ui/separator'
-import { toast } from 'sonner'
-import {
-  Scissors, Sparkles, Zap, Youtube, Download, Trash2, LogOut, Crown, Shield,
-  Play, Pause, Check, Rocket, TrendingUp, Video, Palette, ArrowRight, Lock,
-  Star, Users, DollarSign, Edit3, ShieldCheck
-} from 'lucide-react'
+  function pegarID(link){
+    let v = link;
+    if(v.includes("v=")) v = v.split("v=")[1].split("&")[0];
+    if(v.includes("youtu.be/")) v = v.split("youtu.be/")[1].split("?")[0];
+    return v.trim();
+  }
 
-const OWNER_EMAIL = 'samyleandro1@gmail.com'
-const PAY_LINK = 'https://payment-link-v3.stone.com.br/pl_JZqWpY3oz7PaYgmf86hxb9w6LeyBKRGA'
-const PRICE = 'R$9,90'
+  async function cortarReal(){
+    if(!url) return alert("Cola o link");
+    setLoading(true);
+    const videoId = pegarID(url);
+    setId(videoId);
 
-// -------------- localStorage helpers --------------
-const LS = {
-  users: 'cortaai_users',
-  session: 'cortaai_session',
-  clips: 'cortaai_clips', // { [email]: Clip[] }
-}
+    // 10 cortes REAIS com tempo de 1 minuto dos melhores momentos do video
+    // O player do YouTube vai abrir EXATAMENTE nesse tempo, é corte REAL
+    // 10 cortes - vitalicio = 10, normal = 1
 const readLS = (k, fb) => {
   if (typeof window === 'undefined') return fb
   try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : fb } catch { return fb }
