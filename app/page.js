@@ -219,7 +219,7 @@ export default function App() {
         }
         const next = { ...clipsByUser, [currentUser.email]: [bundle, ...myClips] }
         persistClips(next)
-        toast.success(`${clips.length} cortes gerados com IA! 🎬`)
+        toast.success(`${clips.length} cortes gerados com IA! 🤖`)
         return bundle
       }}
       onRenameBundle={(bid, name) => {
