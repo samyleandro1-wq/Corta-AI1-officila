@@ -70,7 +70,22 @@ export default function App() {
   const [session, setSession] = useState(null)
   const [users, setUsers] = useState([])
   const [clipsByUser, setClipsByUser] = useState({})
+ const [activeClip, setActiveClip] = useState(null)
+  const videoRef = useRef(null)
 
+  // TRAVA DE 1 MINUTO
+  useEffect(() => {
+    const video = videoRef.current
+    if (!video ||!activeClip) return
+    const checkTime = () => {
+      if (video.currentTime >= activeClip.end) {
+        video.pause()
+        video.currentTime = activeClip.end
+      }
+    }
+    video.addEventListener('timeupdate', checkTime)
+    return () => video.removeEventListener('timeupdate', checkTime)
+  }, [activeClip])
   useEffect(() => {
     const s = readLS(LS.session, null)
     const u = readLS(LS.users, [])
