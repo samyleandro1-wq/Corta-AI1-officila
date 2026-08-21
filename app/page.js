@@ -208,7 +208,7 @@ export default function App() {
           toast.error('Limite grátis atingido. Assine para cortes ilimitados.')
           return null
         }
-        const clips = genFakeClips(url).map(c => ({ ...c, style }))
+       const clips = Array.from({ length: 10 }, (_, i) => ({ start: i * 60, end: i * 60 + 60, title: `Corte ${i+1} - 1 min` })).map(c => ({ ...c, style }))
         const bundle = {
           id: crypto.randomUUID(),
           name: `Vídeo ${already + 1}`,
