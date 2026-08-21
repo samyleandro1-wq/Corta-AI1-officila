@@ -15,21 +15,40 @@ export default function Page() {
     return v.trim();
   }
 
-  async function cortarReal(){
+async function cortarReal(){
     if(!url) return alert("Cola o link");
     setLoading(true);
     const videoId = pegarID(url);
     setId(videoId);
+    if(!videoId){
+      setLoading(false);
+      return alert("Link inválido");
+    }
 
-    // 10 cortes REAIS com tempo de 1 minuto dos melhores momentos do video
-    // O player do YouTube vai abrir EXATAMENTE nesse tempo, é corte REAL
-    // 10 cortes - vitalicio = 10, normal = 1
-const readLS = (k, fb) => {
-  if (typeof window === 'undefined') return fb
-  try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : fb } catch { return fb }
-}
-const writeLS = (k, v) => { if (typeof window !== 'undefined') localStorage.setItem(k, JSON.stringify(v)) }
+    // 10 CORTES REAIS - 1 MINUTO CADA - ESPALHADOS PELO VÍDEO
+    const novosCortes = [];
+    for(let i=0; i<10; i++){
+      const base = i * 70;
+      const aleatorio = Math.floor(Math.random() * 15);
+      const start = base + aleatorio;
+      const end = start + 60; // 1 minuto exato
+      novosCortes.push({
+        videoId: videoId,
+        start: start,
+        end: end,
+        title: `Corte ${i+1}`
+      });
+    }
 
+    setCuts(novosCortes);
+    setLoading(false);
+  }
+
+  const readLS = (k, fb) => {
+    if (typeof window === 'undefined') return fb
+    try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : fb } catch { return fb }
+  }
+  const writeLS = (k, v) => { if (typeof window !== 'undefined') localStorage.setItem(k, JSON.stringify(v)) }
 // -------------- Mock IA --------------
 const mockPhrases = [
   'Isso vai mudar sua vida pra sempre',
